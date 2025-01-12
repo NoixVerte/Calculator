@@ -7,7 +7,7 @@ body {
 }
 
 #calculator {
-    border: 5px solid black;
+    border: 10px solid black;
     height: 550px;
     width: 450px;
     border-radius: 10px;
@@ -15,11 +15,12 @@ body {
 
 #result-screen {
     height: 100px;
-    border-bottom: 5px solid black;
+    border-bottom: 10px solid black;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     font-size: 75px;
+    padding-right: 10px;
 }
 
 #buttons {
@@ -54,6 +55,7 @@ button  {
     border-radius: 10px;
     font-size: 75px;
     background-color: white;
+    border: 5px solid black;
 }
 
 #clear-button {

@@ -1,23 +1,38 @@
 const resultScreen = document.querySelector("#result-screen");
 const buttonsWrapper = document.querySelector("#buttons");
-const allowedValues = "1234567890+-*/=C";
-let num1, operator, num2;
+const allowedOperators = "+-*/";
+let array;
+let operator;
 
 buttonsWrapper.addEventListener("click", (event) => {
     let target = event.target;
-    if (target.innerText == "="){
-        console.log(resultScreen.innerText.split(/\+,-,\*,\//));
-        operate(num1, operator, num2);
-    } else if(target.innerText == "C") {
-        resultScreen.innerText = "";
-        num1, num2, operator = undefined;
-    } else if (target.parentElement.parentElement.id == "buttons") {
-        resultScreen.innerText += target.innerText;
+    switch (target.innerText) {
+        case "=":
+            operator = String(resultScreen.innerText.match(/(?<=\d)[+\-*/]/));
+            array = resultScreen.innerText.split(/(?<=\d)[+\-*/]/);
+            resultScreen.innerText = operate(array[0], operator, array[1]);
+            break;
+        case "C":
+            resultScreen.innerText = "";
+            array = [];
+            break;
+        default:
+            if (target.parentElement.parentElement.id == "buttons") {
+                resultScreen.innerText += target.innerText;
+            }
     }
 })
 
 function operate(num1, operator, num2) {
-    switch(operator) {
+    num1 = parseInt(num1);
+    num2 = parseInt(num2);
+    if (operator === "null" || isNaN(num1) || isNaN(num2))  {
+        console.log("sike");
+        console.log(num1, operator, num2);
+        return resultScreen.innerText;
+    }
+    console.log(num1, operator, num2);
+    switch (operator) {
         case "+":
             return add(num1, num2);
         case "-":
@@ -26,21 +41,27 @@ function operate(num1, operator, num2) {
             return multiply(num1, num2);
         case "/":
             return divide(num1, num2);
+        default:
+            console.log("ERROR");
     }
 }
 
 function add(num1, num2)  {
-    return num1 + num2;
+    return (num1 + num2);
 }
 
 function subtract(num1, num2)  {
-    return num1 - num2;
+    return (num1 - num2);
 }
 
 function multiply(num1, num2) {
-    return num1 * num2;
+    return (num1 * num2);
 }
 
 function divide(num1, num2) {
-    return num1 / num2;
+    if (num2 === 0) {
+        return  "Nope!";
+    } else {
+        return (num1 / num2).toFixed(3);
+    }
 }
