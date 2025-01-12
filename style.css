@@ -58,6 +58,14 @@ button  {
     border: 5px solid black;
 }
 
+button:hover {
+    background-color: #C5C5C5;
+}
+
+button:active {
+    background-color: #4C5B61;
+}
+
 #clear-button {
     color: red;
 }
