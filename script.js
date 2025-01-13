@@ -1,6 +1,6 @@
 const resultScreen = document.querySelector("#result-screen");
 const buttonsWrapper = document.querySelector("#buttons");
-let array;
+let array = [];
 let operator;
 
 buttonsWrapper.addEventListener("click", (event) => {
@@ -13,19 +13,19 @@ buttonsWrapper.addEventListener("click", (event) => {
             break;
         case "C":
             resultScreen.innerText = "";
-            array = [];
             break;
         case "+":
         case "-":
         case "x":
         case "/":
-            if (checkIfOperatorAllowed()){
+            if (checkIfOperatorAllowed(target.innerText)){
                 resultScreen.innerText += target.innerText;
             }
             break;
         default:
             if (target.parentElement.parentElement.id == "buttons") {
                 resultScreen.innerText += target.innerText;
+                array = resultScreen.innerText.split(/(?<=\d)[+\-x/]/);
             }
     }
 })
@@ -80,12 +80,15 @@ function cleanupDecimals(number){
     } 
 }
 
-function checkIfOperatorAllowed() {
+function checkIfOperatorAllowed(operator) {
+    if (resultScreen.innerText == "" && operator == "-") return true;
     if (resultScreen.innerText == ""  || 
         resultScreen.innerText.endsWith("+") || 
         resultScreen.innerText.endsWith("-") || 
         resultScreen.innerText.endsWith("x") || 
         resultScreen.innerText.endsWith("/")) {
             return false;
+    } else if (array[1] !== undefined) {
+        return false;
     } else return true;
 }
