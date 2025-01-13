@@ -21,6 +21,7 @@ body {
     align-items: flex-end;
     font-size: 75px;
     padding-right: 10px;
+    /* overflow: hidden; */
 }
 
 #buttons {
@@ -32,7 +33,7 @@ body {
     padding: 10px;
 }
 
-#number-buttons {
+#left-side-buttons {
     width: 300px;
     display: flex;
     justify-content: center;

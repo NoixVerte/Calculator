@@ -1,69 +1,89 @@
-const resultScreen = document.querySelector("#result-screen");
+const resultScreen = document.querySelector("#result-screen").firstElementChild;
 const buttonsWrapper = document.querySelector("#buttons");
-let array = [];
-let operator;
+const buttons = document.querySelectorAll("button");
+let num1 = "";
+let num2 = "";
+let operator = "";
+resultScreen.innerText = "";
 
-buttonsWrapper.addEventListener("click", (event) => {
-    let target = event.target;
-    switch (target.innerText) {
-        case "=":
-            operator = String(resultScreen.innerText.match(/(?<=\d)[+\-x/]/));
-            array = resultScreen.innerText.split(/(?<=\d)[+\-x/]/);
-            resultScreen.innerText = operate(array[0], operator, array[1]);
-            break;
-        case "C":
-            resultScreen.innerText = "";
-            break;
-        case "+":
-        case "-":
-        case "x":
-        case "/":
-            if (checkIfOperatorAllowed(target.innerText)){
-                resultScreen.innerText += target.innerText;
-            }
-            break;
-        default:
-            if (target.parentElement.parentElement.id == "buttons") {
-                resultScreen.innerText += target.innerText;
-                array = resultScreen.innerText.split(/(?<=\d)[+\-x/]/);
-            }
-    }
-})
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        switch(button.innerText) {
+            case "C":
+                wipeResultScreen();
+                num1 = "";
+                num2 = "";
+                operator = "";
+                break;
+            case "=":
+                if (num1 == "" || operator == "") break;
+                num2 = resultScreen.innerText;
+                resultScreen.innerText = operate();
+                num1 = resultScreen.innerText;
+                num2 = "";
+                operator = "";
+                break;
+            case "+":
+            case "-":
+            case "x":
+            case "/":
+                if (resultScreen.innerText === "" && button.innerText == "-") {
+                    updateResultScreen(button.innerText);
+                    break;
+                }
+                !num1 ? num1 = resultScreen.innerText : num2 = resultScreen.innerText;
+                // console.log(`resultScreen.innerText: ${resultScreen.innerText} num1: ${num1} num2: ${num2}`);
+                wipeResultScreen();
+                resultScreen.innerText = button.innerText;
+                operator = button.innerText;
+                break;
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "0":
+                if (num1 && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "x" || resultScreen.innerText == "/")) {
+                    wipeResultScreen();
+                }
+                if (resultScreen.innerText.length < 12) {
+                    updateResultScreen(button.innerText);
+                }
+                break;
+        }
+    })
+});
 
-function operate(num1, operator, num2) {
-    num1 = parseFloat(num1);
-    num2 = parseInt(num2);
-    if (operator === "null" || isNaN(num1) || isNaN(num2))  {
-        return resultScreen.innerText;
-    }
-    console.log(num1, operator, num2);
-    switch (operator) {
-        case "+":
-            return add(num1, num2);
-        case "-":
-            return subtract(num1, num2);
-        case "x":
-            return multiply(num1, num2);
-        case "/":
-            return divide(num1, num2);
-        default:
-            console.log("ERROR");
+function operate() {
+    switch(operator) {
+        case "+": return add();
+        case "-": return subtract();
+        case "x": return multiply();
+        case "/": return divide();
     }
 }
 
-function add(num1, num2)  {
-    return (num1 + num2);
+function add()  {
+    let result = (parseFloat(num1) + parseFloat(num2));
+    if (result == result.toFixed(0)) {
+        return parseInt(result);
+    }
+    return parseFloat(result);
 }
 
-function subtract(num1, num2)  {
+function subtract()  {
     return (num1 - num2);
 }
 
-function multiply(num1, num2) {
+function multiply() {
     return (num1 * num2);
 }
 
-function divide(num1, num2) {
+function divide() {
     if (num2 === 0) {
         return  "Nope!";
     } else {
@@ -75,20 +95,14 @@ function cleanupDecimals(number){
     if (parseInt(number) ==  number) {
         return parseInt(number);
     } else {
-        let amountOfDecimals = 4;
-        return number.toFixed(amountOfDecimals);
+        return number = Math.round(number * 1000) / 1000;
     } 
 }
 
-function checkIfOperatorAllowed(operator) {
-    if (resultScreen.innerText == "" && operator == "-") return true;
-    if (resultScreen.innerText == ""  || 
-        resultScreen.innerText.endsWith("+") || 
-        resultScreen.innerText.endsWith("-") || 
-        resultScreen.innerText.endsWith("x") || 
-        resultScreen.innerText.endsWith("/")) {
-            return false;
-    } else if (array[1] !== undefined) {
-        return false;
-    } else return true;
+function updateResultScreen(string) {
+    resultScreen.innerText += string;
+}
+
+function wipeResultScreen() {
+    resultScreen.innerText = "";
 }
