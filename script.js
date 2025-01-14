@@ -11,31 +11,33 @@ buttons.forEach(button => {
         switch(button.innerText) {
             case "C":
                 wipeResultScreen();
-                num1 = "";
-                num2 = "";
-                operator = "";
+                flushVariables();
                 break;
             case "=":
-                if (num1 == "" || operator == "") break;
-                num2 = resultScreen.innerText;
-                resultScreen.innerText = operate();
-                num1 = resultScreen.innerText;
-                num2 = "";
-                operator = "";
+                if (num1 !== "" && operator !== "" && (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0)) {
+                    num2 = assignNumber(resultScreen.innerText);
+                    resultScreen.innerText = operate();
+                    flushVariables();
+                }
                 break;
             case "+":
             case "-":
             case "x":
             case "/":
-                if (resultScreen.innerText === "" && button.innerText == "-") {
-                    updateResultScreen(button.innerText);
-                    break;
+                if (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0) {
+                    if (num1 === "") {
+                        num1 = assignNumber(resultScreen.innerText);
+                        wipeResultScreen();
+                        resultScreen.innerText = button.innerText;
+                    } else if (num2 === "") {
+                        num2 = assignNumber(resultScreen.innerText);
+                        resultScreen.innerText = operate();
+                        flushVariables();
+                        num1 = assignNumber(resultScreen.innerText);
+                        wipeResultScreen();
+                        resultScreen.innerText = button.innerText;
+                    }
                 }
-                !num1 ? num1 = resultScreen.innerText : num2 = resultScreen.innerText;
-                // console.log(`resultScreen.innerText: ${resultScreen.innerText} num1: ${num1} num2: ${num2}`);
-                wipeResultScreen();
-                resultScreen.innerText = button.innerText;
-                operator = button.innerText;
                 break;
             case "1":
             case "2":
@@ -47,11 +49,17 @@ buttons.forEach(button => {
             case "8":
             case "9":
             case "0":
-                if (num1 && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "x" || resultScreen.innerText == "/")) {
+                if (resultScreen.innerText === "Nope!") wipeResultScreen();
+                if (num1 !== "" && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "x" || resultScreen.innerText == "/")) {
+                    assignOperator(resultScreen.innerText);
                     wipeResultScreen();
                 }
                 if (resultScreen.innerText.length < 12) {
-                    updateResultScreen(button.innerText);
+                    if (resultScreen.innerText === "0") {
+                        resultScreen.innerText = button.innerText;
+                    } else  {
+                        updateResultScreen(button.innerText);
+                    }
                 }
                 break;
         }
@@ -68,11 +76,7 @@ function operate() {
 }
 
 function add()  {
-    let result = (parseFloat(num1) + parseFloat(num2));
-    if (result == result.toFixed(0)) {
-        return parseInt(result);
-    }
-    return parseFloat(result);
+    return num1 + num2;
 }
 
 function subtract()  {
@@ -91,11 +95,11 @@ function divide() {
     }
 }
 
-function cleanupDecimals(number){
-    if (parseInt(number) ==  number) {
-        return parseInt(number);
+function cleanupDecimals(cleanedNumber){
+    if (parseInt(cleanedNumber) ==  cleanedNumber) {
+        return parseInt(cleanedNumber);
     } else {
-        return number = Math.round(number * 1000) / 1000;
+        return Math.round(parseFloat(cleanedNumber) * 1000) / 1000;
     } 
 }
 
@@ -105,4 +109,19 @@ function updateResultScreen(string) {
 
 function wipeResultScreen() {
     resultScreen.innerText = "";
+}
+
+function assignNumber(assignedNumber) {
+    if (assignedNumber !== "") return cleanupDecimals(assignedNumber);
+    else console.log("ERROR while assigning number");
+}
+
+function assignOperator(assignedOperator) {
+    operator = assignedOperator;
+}
+
+function flushVariables() {
+    num1 = "";
+    num2 = "";
+    operator = "";
 }
