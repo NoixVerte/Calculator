@@ -20,6 +20,29 @@ buttons.forEach(button => {
                     flushVariables();
                 }
                 break;
+            case "+/-":
+                if (parseFloat(resultScreen.innerText) < 0) {
+                    resultScreen.innerText = Math.abs(resultScreen.innerText);
+                } else if (parseFloat(resultScreen.innerText) > 0){
+                    resultScreen.innerText = -Math.abs(resultScreen.innerText);
+                }
+                break;
+            case "<─":
+                if (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0) {
+                    if (resultScreen.innerText.length > 0) {
+                        resultScreen.innerText = resultScreen.innerText.slice(0,-1);
+                    }
+                }
+                break;
+            case ".":
+                if (!resultScreen.innerText.includes(".")) {
+                    if (resultScreen.innerText === "") {
+                        resultScreen.innerText = "0.";
+                    } else if (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0) {
+                        updateResultScreen(button.innerText);
+                    }
+                }
+                break;
             case "+":
             case "-":
             case "x":
@@ -76,15 +99,15 @@ function operate() {
 }
 
 function add()  {
-    return num1 + num2;
+    return cleanupDecimals(num1 + num2);
 }
 
 function subtract()  {
-    return (num1 - num2);
+    return cleanupDecimals(num1 - num2);
 }
 
 function multiply() {
-    return (num1 * num2);
+    return cleanupDecimals(num1 * num2);
 }
 
 function divide() {
