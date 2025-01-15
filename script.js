@@ -1,5 +1,4 @@
 const resultScreen = document.querySelector("#result-screen").firstElementChild;
-const buttonsWrapper = document.querySelector("#buttons");
 const page = document.querySelector("body");
 const buttons = document.querySelectorAll("button");
 let num1 = "";
@@ -96,8 +95,6 @@ function handleButtonPress() {
 }
 
 function handleKeyPress(event) {
-    console.log("Function reached");
-    console.log(`${event.key} key pressed!`);
     switch(String(event.key)) {
         case "C":
         case "c":
