@@ -51,7 +51,7 @@ function handleButtonPress() {
             break;
         case "+":
         case "-":
-        case "x":
+        case "*":
         case "/":
             if (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0) {
                 if (num1 === "") {
@@ -79,7 +79,7 @@ function handleButtonPress() {
         case "9":
         case "0":
             if (resultScreen.innerText === "Nope!") wipeResultScreen();
-            if (num1 !== "" && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "x" || resultScreen.innerText == "/")) {
+            if (num1 !== "" && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "*" || resultScreen.innerText == "/")) {
                 assignOperator(resultScreen.innerText);
                 wipeResultScreen();
             }
@@ -135,7 +135,7 @@ function handleKeyPress(event) {
             break;
         case "+":
         case "-":
-        case "x":
+        case "*":
         case "/":
             if (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0) {
                 if (num1 === "") {
@@ -163,7 +163,7 @@ function handleKeyPress(event) {
         case "9":
         case "0":
             if (resultScreen.innerText === "Nope!") wipeResultScreen();
-            if (num1 !== "" && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "x" || resultScreen.innerText == "/")) {
+            if (num1 !== "" && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "*" || resultScreen.innerText == "/")) {
                 assignOperator(resultScreen.innerText);
                 wipeResultScreen();
             }
@@ -182,7 +182,7 @@ function operate() {
     switch(operator) {
         case "+": return add();
         case "-": return subtract();
-        case "x": return multiply();
+        case "*": return multiply();
         case "/": return divide();
     }
 }

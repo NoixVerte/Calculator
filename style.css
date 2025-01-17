@@ -68,6 +68,7 @@ button:hover {
 button:active {
     background-color: rgb(56, 56, 56);
     color: white;
+    font-size: 65px;
 }
 
 #clear-button {
@@ -101,5 +102,5 @@ button:active {
 }
 
 #negative {
-    font-size: 60px;
+    font-size: 55px;
 }
