@@ -15,7 +15,9 @@ page.addEventListener("keydown", handleButtonPress);
 
 function handleButtonPress(event) {
     const input = event.key || this.innerText;
-    switch(input) {
+    console.log(`${num1}${operator}${num2}`);
+    console.log(`${event.key}`);
+    switch(String(input)) {
         case "C":
         case "c":
             wipeResultScreen();
@@ -23,10 +25,12 @@ function handleButtonPress(event) {
             break;
         case "=":
         case "Enter":
+            event.preventDefault();
             if (num1 !== "" && operator !== "" && (parseFloat(resultScreen.innerText) || parseFloat(resultScreen.innerText) === 0)) {
                 num2 = assignNumber(resultScreen.innerText);
                 resultScreen.innerText = operate();
                 flushVariables();
+                break;
             }
             break;
         case "+/-":
@@ -81,7 +85,7 @@ function handleButtonPress(event) {
         case "7":
         case "8":
         case "9":
-        case "0":
+        case "0":       
             if (resultScreen.innerText === "Nope!") wipeResultScreen();
             if (num1 !== "" && (resultScreen.innerText == "+" || resultScreen.innerText == "-" || resultScreen.innerText == "*" || resultScreen.innerText == "/")) {
                 assignOperator(resultScreen.innerText);
